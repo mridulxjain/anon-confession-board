@@ -6,22 +6,26 @@ export default function New() {
   const [success, setSuccess] = useState(false);
   const navigate = useNavigate();
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     if (!text.trim()) return;
 
-    // Placeholder → replace with backend API call later
-    console.log("Posting:", text);
-    setSuccess(true);
-    setText("");
-
-    navigate("/confessions");
+    const res = await fetch("http://localhost:3000/api/confessions", {
+      method: "POST",
+      headers: {"Content-Type": "application/json",},
+      body: JSON.stringify({text}),
+    });
+    if (res.ok) {
+      setSuccess(true);
+      setText("");
+      navigate("/confessions");
+    }
   };
 
   return (
     <div className="min-h-screen bg-background text-text flex flex-col items-center justify-start px-6 pt-24">
       <div className="text-center max-w-2xl w-full">
-        {/* Heading with subtle blur animation */}
+
         <h1 className="text-4xl md:text-5xl font-extrabold mb-4">
          Post Your Confession
         </h1>
@@ -35,12 +39,12 @@ export default function New() {
           className="flex flex-col gap-4 w-full bg-surface p-6 rounded-2xl shadow-lg border border-border"
         >
           <textarea
-            className="w-full p-4 rounded-lg border border-border bg-background text-text resize-none focus:outline-none focus:ring-2 focus:ring-accent transition"
-            placeholder="Type your confession here (max 100 words)..."
+            className="w-full p-5 rounded-2xl border border-border bg-background text-text placeholder:text-muted placeholder:italic resize-none focus:outline-none focus:ring-2 focus:ring-accent focus:ring-offset-1 shadow-sm transition-all duration-300 text-base"
+            placeholder="Share your deepest thoughts..."
             value={text}
             onChange={(e) => setText(e.target.value)}
             rows={6}
-            maxLength={700}
+            maxLength={300}
           />
 
           <div className="flex flex-col sm:flex-row gap-4 justify-end">

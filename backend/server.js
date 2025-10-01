@@ -1,6 +1,7 @@
-const express = require('express');
-const cors = require('cors');
-const dotenv = require('dotenv');
+const express = require("express");
+const cors = require("cors");
+const dotenv = require("dotenv");
+const confessionRouter = require("./src/routes/confessionRouter");
 
 dotenv.config();
 
@@ -8,6 +9,9 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-app.listen(process.env.PORT || 3000, () =>{
-    console.log(`Server is running on port https://localhost:${process.env.PORT || 3000}`);
-})
+app.use("/api/confessions", confessionRouter);
+
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => {
+  console.log(`🚀 Server running at http://localhost:${PORT}`);
+});

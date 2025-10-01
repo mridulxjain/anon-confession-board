@@ -9,7 +9,7 @@ export default function Navbar() {
   return (
     <nav className="fixed top-0 left-0 w-full z-50 flex justify-between items-center px-6 py-3 border-b-2 border-border bg-background text-text">
       <a href="/" className="font-megrim text-2xl">
-        Whisper
+        Whizper
       </a>
 
       {/* Desktop Menu */}

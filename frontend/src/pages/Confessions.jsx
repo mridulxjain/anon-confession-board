@@ -1,24 +1,40 @@
 import { useState } from "react";
 import ConfessionCard from "../components/ConfessionCard";
 import Pagination from "../components/Pagination";
+import { useEffect } from "react";
 
 export default function Confessions() {
-  // Sample data → replace with Supabase fetch
-  const allConfessions = Array.from({ length: 10 }, (_, i) => ({
-    id: i + 1,
-    text: `This is confession #${i + 1}. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. `.repeat(1),
-    date: "2025-09-29",
-  }));
+
+  const [confessions, setConfessions] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchConfessions = async () => {
+      try {
+        const res = await fetch("http://localhost:3000/api/confessions");
+        const data = await res.json();
+        setConfessions(data);
+      } catch (error) {
+        console.error("Error fetching confessions:", error);
+
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchConfessions();
+  },[]);
+
 
   const itemsPerPage = 6;
   const [currentPage, setCurrentPage] = useState(1);
 
-  const totalPages = Math.ceil(allConfessions.length / itemsPerPage);
-
-  const currentConfessions = allConfessions.slice(
+  const totalPages = Math.ceil(confessions.length / itemsPerPage);
+  const currentConfessions = confessions.slice(
     (currentPage - 1) * itemsPerPage,
     currentPage * itemsPerPage
   );
+  if (loading) return <p className="text-center mt-12">Loading...</p>;
 
   return (
     <div className="overflow-scroll bg-background text-text px-6 py-8 min-h-screen">

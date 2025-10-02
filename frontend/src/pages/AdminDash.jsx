@@ -9,7 +9,7 @@ export default function AdminDashboard() {
   useEffect(() => {
     const fetchConfessions = async () => {
       try {
-        const res = await fetch("http://localhost:3000/api/confessions");
+        const res = await fetch("https://anon-confession-board-production.up.railway.app/api/confessions");
         const data = await res.json();
         setAllConfessions(data);
       } catch (error) {

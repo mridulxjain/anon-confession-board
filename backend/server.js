@@ -1,22 +1,23 @@
 const express = require("express");
 const cors = require("cors");
-const dotenv = require("dotenv");
-const confessionRouter = require("./src/routes/confessionRouter");
+require("dotenv").config();
 
-dotenv.config();
+const confessionRouter = require("./routes/confessionRouter");
+const adminRouter = require("./routes/adminRouter");
 
 const app = express();
+const PORT = process.env.PORT || 8080;
+
 app.use(cors());
 app.use(express.json());
 
 app.use("/api/confessions", confessionRouter);
-
-const PORT = process.env.PORT || 8080;  
+app.use("/api/admin", adminRouter);
 
 app.get("/", (req, res) => {
-  res.send("🚀 Whizper backend is running on Railway!");
+  res.send("Backend running ✅");
 });
 
 app.listen(PORT, () => {
-  console.log(`🚀 Server running at http://localhost:${PORT}`);
+  console.log(`Server running on port ${PORT}`);
 });

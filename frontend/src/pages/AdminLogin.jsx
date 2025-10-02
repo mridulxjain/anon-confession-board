@@ -7,15 +7,28 @@ export default function AdminLogin({ onLogin }) {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setError("");
 
-    const adminEmail = import.meta.env.ADMIN_EMAIL;
-    const adminPassword = import.meta.env.ADMIN_PASSWORD;
-    
-    if (email === adminEmail && password === adminPassword) {
-      localStorage.setItem("admin", "true");
-      onLogin();
-    } else {
-      setError("Invalid credentials");
+    try {
+      const res = await fetch("https://anon-confession-board-production.up.railway.app/api/admin/login",
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ email, password }),
+        }
+      );
+
+      const data = await res.json();
+
+      if (res.ok && data.success) {
+        localStorage.setItem("admin", "true");
+        onLogin();
+      } else {
+        setError(data.message || "Invalid credentials");
+      }
+    } catch (err) {
+      console.error("Login error:", err);
+      setError("Something went wrong, try again");
     }
   };
 

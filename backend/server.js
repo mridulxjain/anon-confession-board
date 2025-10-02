@@ -11,7 +11,12 @@ app.use(express.json());
 
 app.use("/api/confessions", confessionRouter);
 
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 8080;  
+
+app.get("/", (req, res) => {
+  res.send("🚀 Whizper backend is running on Railway!");
+});
+
 app.listen(PORT, () => {
   console.log(`🚀 Server running at http://localhost:${PORT}`);
 });
